@@ -21,4 +21,7 @@ interface PostRepository : JpaRepository<Post, Long> {
     fun findAllByOrderByCreatedAtDesc(): List<Post>
     
     fun findAllByOrderByRatingDesc(): List<Post>
+    
+    // 관리자용 - 사용자별 게시글 개수 조회
+    fun countByUserNickname(userNickname: String): Long
 }

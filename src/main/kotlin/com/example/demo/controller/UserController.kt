@@ -13,9 +13,13 @@ import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = ["*"])
+@CrossOrigin(
+    origins = ["http://localhost:3000", "https://after-ungratifying-lilyanna.ngrok-free.dev"],
+    allowCredentials = "true"
+)
 class UserController(
-    private val userService: UserService
+    private val userService: UserService,
+    private val commentService: com.example.demo.service.CommentService
 ) {
     
     @PostMapping
@@ -24,7 +28,7 @@ class UserController(
             val response = userService.createUser(request)
             ResponseEntity.status(HttpStatus.CREATED).body(response)
         } catch (e: RuntimeException) {
-            ResponseEntity.badRequest().body(mapOf("error" to e.message))
+            ResponseEntity.badRequest().body(mapOf("error" to (e.message ?: "오류가 발생했습니다.") as Any))
         }
     }
     
@@ -75,7 +79,7 @@ class UserController(
                 ResponseEntity.notFound().build()
             }
         } catch (e: RuntimeException) {
-            ResponseEntity.badRequest().body(mapOf("error" to e.message))
+            ResponseEntity.badRequest().body(mapOf("error" to (e.message ?: "오류가 발생했습니다.") as Any))
         }
     }
     
@@ -94,7 +98,7 @@ class UserController(
                 ResponseEntity.notFound().build()
             }
         } catch (e: RuntimeException) {
-            ResponseEntity.badRequest().body(mapOf("error" to e.message))
+            ResponseEntity.badRequest().body(mapOf("error" to (e.message ?: "오류가 발생했습니다.") as Any))
         }
     }
     
@@ -131,7 +135,33 @@ class UserController(
             userService.deleteUser(id)
             ResponseEntity.ok().build()
         } catch (e: RuntimeException) {
-            ResponseEntity.badRequest().body(mapOf("error" to e.message))
+            ResponseEntity.badRequest().body(mapOf("error" to (e.message ?: "오류가 발생했습니다.") as Any))
+        }
+    }
+    
+    /**
+     * 사용자가 작성한 댓글 목록 조회
+     */
+    @GetMapping("/{nickname}/comments")
+    fun getUserComments(@PathVariable nickname: String): ResponseEntity<Any> {
+        return try {
+            val comments = commentService.getCommentsByUser(nickname)
+            ResponseEntity.ok(comments)
+        } catch (e: RuntimeException) {
+            ResponseEntity.badRequest().body(mapOf("error" to (e.message ?: "오류가 발생했습니다.") as Any))
+        }
+    }
+    
+    /**
+     * 사용자가 작성한 댓글 개수 조회
+     */
+    @GetMapping("/{nickname}/comments/count")
+    fun getUserCommentCount(@PathVariable nickname: String): ResponseEntity<Map<String, Any>> {
+        return try {
+            val count = commentService.getCommentCountByUser(nickname)
+            ResponseEntity.ok(mapOf("count" to count as Any))
+        } catch (e: RuntimeException) {
+            ResponseEntity.badRequest().body(mapOf("error" to (e.message ?: "오류가 발생했습니다.") as Any))
         }
     }
 }

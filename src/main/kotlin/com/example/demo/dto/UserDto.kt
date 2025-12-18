@@ -1,5 +1,6 @@
 package com.example.demo.dto
 
+import com.example.demo.entity.Role
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
@@ -15,7 +16,9 @@ data class UserCreateRequest(
     val phoneNumber: String,
     
     @field:NotBlank(message = "비밀번호는 필수입니다")
-    val password: String
+    val password: String,
+    
+    val role: Role = Role.USER
 )
 
 data class UserResponse(
@@ -23,6 +26,7 @@ data class UserResponse(
     val userId: String,
     val nickname: String,
     val phoneNumber: String,
+    val role: Role,
     val bio: String? = null,
     val survey: String? = null,
     val profileImageUrl: String? = null

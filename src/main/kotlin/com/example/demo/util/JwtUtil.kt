@@ -11,7 +11,7 @@ import java.util.*
 @Component
 class JwtUtil {
     
-    private val secretKey: Key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
+    private val secretKey: Key = Keys.hmacShaKeyFor("mySecretKeyForJwtTokenGenerationAndValidation1234567890".toByteArray())
     private val expiration = 86400000 // 24시간 (밀리초)
     
     fun generateToken(nickname: String): String {

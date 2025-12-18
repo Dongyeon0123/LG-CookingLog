@@ -4,15 +4,21 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: skso1951
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
   
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
+        format_sql: false
   
   security:
     user:
@@ -28,10 +34,16 @@ spring:
 
 server:
   port: 8080
+  tomcat:
+    connection-timeout: 60000
+    keep-alive-timeout: 60000
+    max-keep-alive-requests: 100
+  shutdown: graceful
 
 logging:
   level:
-    '[org.springframework.security]': DEBUG
-    '[com.example.demo]': DEBUG
-    '[org.springframework.web]': DEBUG
+    '[org.springframework.security]': WARN
+    '[com.example.demo]': INFO
+    '[org.springframework.web]': WARN
+    '[org.hibernate.SQL]': WARN
     root: INFO

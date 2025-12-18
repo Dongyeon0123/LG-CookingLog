@@ -41,7 +41,8 @@ class UserService(
             userId = request.userId,
             nickname = request.nickname,
             phoneNumber = request.phoneNumber,
-            password = encodedPassword
+            password = encodedPassword,
+            role = request.role
         )
         
         val savedUser = userRepository.save(user)
@@ -51,6 +52,7 @@ class UserService(
             userId = savedUser.userId,
             nickname = savedUser.nickname,
             phoneNumber = savedUser.phoneNumber,
+            role = savedUser.role,
             bio = savedUser.bio,
             survey = savedUser.survey,
             profileImageUrl = savedUser.profileImageUrl
@@ -65,6 +67,7 @@ class UserService(
                 userId = user.userId,
                 nickname = user.nickname,
                 phoneNumber = user.phoneNumber,
+                role = user.role,
                 bio = user.bio,
                 survey = user.survey,
                 profileImageUrl = user.profileImageUrl
@@ -80,6 +83,7 @@ class UserService(
                 userId = user.userId,
                 nickname = user.nickname,
                 phoneNumber = user.phoneNumber,
+                role = user.role,
                 bio = user.bio,
                 survey = user.survey,
                 profileImageUrl = user.profileImageUrl
@@ -95,6 +99,7 @@ class UserService(
                 userId = user.userId,
                 nickname = user.nickname,
                 phoneNumber = user.phoneNumber,
+                role = user.role,
                 bio = user.bio,
                 survey = user.survey,
                 profileImageUrl = user.profileImageUrl
@@ -142,6 +147,7 @@ class UserService(
             userId = savedUser.userId,
             nickname = savedUser.nickname,
             phoneNumber = savedUser.phoneNumber,
+            role = savedUser.role,
             bio = savedUser.bio,
             survey = savedUser.survey,
             profileImageUrl = savedUser.profileImageUrl
@@ -170,6 +176,7 @@ class UserService(
             userId = savedUser.userId,
             nickname = savedUser.nickname,
             phoneNumber = savedUser.phoneNumber,
+            role = savedUser.role,
             bio = savedUser.bio,
             survey = savedUser.survey,
             profileImageUrl = savedUser.profileImageUrl

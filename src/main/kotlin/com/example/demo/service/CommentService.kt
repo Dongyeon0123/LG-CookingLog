@@ -185,6 +185,44 @@ class CommentService(
         return commentRepository.countByPostId(postId)
     }
     
+    /**
+     * 사용자가 작성한 댓글 목록 조회
+     */
+    @Transactional(readOnly = true)
+    fun getCommentsByUser(userNickname: String): List<CommentResponse> {
+        println("=== 사용자 댓글 조회 ===")
+        println("검색할 닉네임: $userNickname")
+        
+        val comments = commentRepository.findByUserNicknameOrderByCreatedAtDesc(userNickname)
+        println("조회된 댓글 개수: ${comments.size}")
+        
+        return comments.map { comment ->
+            // 사용자 프로필 이미지 조회
+            val user = userRepository.findByNickname(comment.userNickname)
+            
+            CommentResponse(
+                id = comment.id,
+                content = comment.content,
+                postId = comment.postId,
+                userNickname = comment.userNickname,
+                userProfileImageUrl = user?.profileImageUrl,
+                rating = comment.rating,
+                likeCount = comment.likeCount,
+                parentCommentId = comment.parentCommentId,
+                createdAt = comment.createdAt,
+                updatedAt = comment.updatedAt
+            )
+        }
+    }
+    
+    /**
+     * 사용자가 작성한 댓글 개수 조회
+     */
+    @Transactional(readOnly = true)
+    fun getCommentCountByUser(userNickname: String): Long {
+        return commentRepository.countByUserNickname(userNickname)
+    }
+    
     fun toggleCommentLike(commentId: Long, userNickname: String): Map<String, Any> {
         val comment = commentRepository.findById(commentId)
             .orElseThrow { RuntimeException("존재하지 않는 댓글입니다") }

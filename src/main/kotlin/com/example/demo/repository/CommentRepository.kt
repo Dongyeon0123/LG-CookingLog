@@ -10,4 +10,8 @@ interface CommentRepository : JpaRepository<Comment, Long> {
     fun findByParentCommentIdOrderByCreatedAtAsc(parentCommentId: Long): List<Comment>
     fun countByPostId(postId: Long): Long
     fun deleteByPostId(postId: Long)
+    
+    // 사용자별 댓글 조회
+    fun findByUserNicknameOrderByCreatedAtDesc(userNickname: String): List<Comment>
+    fun countByUserNickname(userNickname: String): Long
 }

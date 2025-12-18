@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = ["*"])
+@CrossOrigin(
+    origins = ["http://localhost:3000", "https://after-ungratifying-lilyanna.ngrok-free.dev"],
+    allowCredentials = "true"
+)
 class AuthController(
     private val authService: AuthService
 ) {

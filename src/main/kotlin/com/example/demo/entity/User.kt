@@ -27,6 +27,10 @@ data class User(
     @field:NotBlank(message = "비밀번호는 필수입니다")
     val password: String,
     
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    val role: Role = Role.USER,
+    
     // 마이페이지 추가 필드들
     @Column(length = 150)
     val bio: String? = null,

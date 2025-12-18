@@ -1,6 +1,8 @@
 package com.example.demo.repository
 
 import com.example.demo.entity.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -12,4 +14,12 @@ interface UserRepository : JpaRepository<User, Long> {
     fun existsByUserId(userId: String): Boolean
     fun existsByNickname(nickname: String): Boolean
     fun existsByPhoneNumber(phoneNumber: String): Boolean
+    
+    // 관리자용 검색 기능
+    fun findByUserIdContainingOrNicknameContainingOrPhoneNumberContaining(
+        userId: String,
+        nickname: String,
+        phoneNumber: String,
+        pageable: Pageable
+    ): Page<User>
 }

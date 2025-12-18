@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/posts/{postId}/comments")
-@CrossOrigin(origins = ["*"])
+@CrossOrigin(
+    origins = ["http://localhost:3000", "https://after-ungratifying-lilyanna.ngrok-free.dev"],
+    allowCredentials = "true"
+)
 class CommentController(
     private val commentService: CommentService
 ) {

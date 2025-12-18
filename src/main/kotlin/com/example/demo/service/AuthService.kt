@@ -28,7 +28,11 @@ class AuthService(
             id = user.id,
             userId = user.userId,
             nickname = user.nickname,
-            phoneNumber = user.phoneNumber
+            phoneNumber = user.phoneNumber,
+            role = user.role,
+            bio = user.bio,
+            survey = user.survey,
+            profileImageUrl = user.profileImageUrl
         )
         
         return LoginResponse(token = token, user = userResponse)

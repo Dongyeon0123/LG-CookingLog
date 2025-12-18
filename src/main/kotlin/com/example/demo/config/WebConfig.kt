@@ -15,10 +15,10 @@ class WebConfig : WebMvcConfigurer {
     
     override fun addCorsMappings(registry: org.springframework.web.servlet.config.annotation.CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOriginPatterns("*")
+            .allowedOriginPatterns("http://localhost:3000", "https://after-ungratifying-lilyanna.ngrok-free.dev")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
-            .allowCredentials(false)
+            .allowCredentials(true)
             .maxAge(3600)
     }
 }

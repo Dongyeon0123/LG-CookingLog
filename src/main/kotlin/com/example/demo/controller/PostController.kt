@@ -13,9 +13,10 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/api/posts")
 @CrossOrigin(
-    origins = ["*"],
+    origins = ["http://localhost:3000", "https://after-ungratifying-lilyanna.ngrok-free.dev"],
     methods = [RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS],
-    allowedHeaders = ["*"]
+    allowedHeaders = ["*"],
+    allowCredentials = "true"
 )
 class PostController(
     private val postService: PostService
