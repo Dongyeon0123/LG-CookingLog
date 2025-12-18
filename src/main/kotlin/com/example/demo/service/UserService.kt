@@ -105,7 +105,31 @@ class UserService(
     fun updateUser(id: Long, request: UserUpdateRequest): UserResponse? {
         val existingUser = userRepository.findById(id).orElse(null) ?: return null
         
+        // 닉네임 중복 체크 (변경하려는 경우에만)
+        if (request.nickname != null && request.nickname != existingUser.nickname) {
+            if (userRepository.existsByNickname(request.nickname)) {
+                throw RuntimeException("이미 존재하는 닉네임입니다")
+            }
+        }
+        
+        // 전화번호 중복 체크 (변경하려는 경우에만)
+        if (request.phoneNumber != null && request.phoneNumber != existingUser.phoneNumber) {
+            if (userRepository.existsByPhoneNumber(request.phoneNumber)) {
+                throw RuntimeException("이미 존재하는 전화번호입니다")
+            }
+        }
+        
+        // 비밀번호 암호화 (변경하려는 경우에만)
+        val encodedPassword = if (request.password != null) {
+            passwordEncoder.encode(request.password)
+        } else {
+            existingUser.password
+        }
+        
         val updatedUser = existingUser.copy(
+            nickname = request.nickname ?: existingUser.nickname,
+            phoneNumber = request.phoneNumber ?: existingUser.phoneNumber,
+            password = encodedPassword,
             bio = request.bio ?: existingUser.bio,
             survey = request.survey ?: existingUser.survey,
             profileImageUrl = request.profileImageUrl ?: existingUser.profileImageUrl

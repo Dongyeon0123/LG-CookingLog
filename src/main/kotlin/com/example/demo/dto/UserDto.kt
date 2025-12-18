@@ -29,6 +29,13 @@ data class UserResponse(
 )
 
 data class UserUpdateRequest(
+    val nickname: String? = null,
+    
+    @field:Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "전화번호 형식이 올바르지 않습니다")
+    val phoneNumber: String? = null,
+    
+    val password: String? = null,
+    
     @field:Size(max = 150, message = "자기소개는 150자 이하여야 합니다")
     val bio: String? = null,
     

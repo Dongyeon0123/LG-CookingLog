@@ -20,9 +20,24 @@ class CommentController(
     fun createComment(
         @PathVariable postId: Long,
         @RequestHeader("User-Nickname") userNickname: String,
-        @Valid @RequestBody request: CommentCreateRequest
+        @RequestBody request: CommentCreateRequest
     ): ResponseEntity<Any> {
         return try {
+            // 수동 검증
+            if (request.content.isBlank()) {
+                return ResponseEntity.badRequest().body(mapOf("error" to "댓글 내용은 필수입니다"))
+            }
+            
+            // 대댓글이 아닌 경우에만 별점 검증
+            if (request.parentCommentId == null) {
+                if (request.rating == null) {
+                    return ResponseEntity.badRequest().body(mapOf("error" to "별점은 필수입니다"))
+                }
+                if (request.rating < 1 || request.rating > 5) {
+                    return ResponseEntity.badRequest().body(mapOf("error" to "별점은 1-5 사이여야 합니다"))
+                }
+            }
+            
             val response = commentService.createComment(postId, userNickname, request)
             ResponseEntity.status(HttpStatus.CREATED).body(response)
         } catch (e: RuntimeException) {
@@ -50,9 +65,14 @@ class CommentController(
         @PathVariable postId: Long,
         @PathVariable commentId: Long,
         @RequestHeader("User-Nickname") userNickname: String,
-        @Valid @RequestBody request: CommentUpdateRequest
+        @RequestBody request: CommentUpdateRequest
     ): ResponseEntity<Any> {
         return try {
+            // 수동 검증
+            if (request.content.isBlank()) {
+                return ResponseEntity.badRequest().body(mapOf("error" to "댓글 내용은 필수입니다"))
+            }
+            
             val response = commentService.updateComment(commentId, userNickname, request)
             ResponseEntity.ok(response)
         } catch (e: RuntimeException) {

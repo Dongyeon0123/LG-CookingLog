@@ -40,12 +40,17 @@ class CommentService(
         // 대댓글인지 확인
         val isReply = request.parentCommentId != null
         
+        // 일반 댓글인 경우 별점 필수 확인
+        if (!isReply && request.rating == null) {
+            throw RuntimeException("일반 댓글에는 별점이 필수입니다")
+        }
+        
         val comment = Comment(
             content = request.content,
             postId = postId,
             userNickname = userNickname,
             rating = if (isReply) null else request.rating, // 대댓글이면 별점 없음
-            likeCount = if (isReply) null else 0, // 대댓글이면 좋아요 없음
+            likeCount = if (isReply) 0 else 0, // 임시로 0으로 설정 (나중에 null로 변경 예정)
             parentCommentId = request.parentCommentId
         )
         

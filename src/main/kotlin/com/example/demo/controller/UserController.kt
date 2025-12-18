@@ -60,6 +60,14 @@ class UserController(
         @Valid @RequestBody request: UserUpdateRequest
     ): ResponseEntity<Any> {
         return try {
+            println("=== 회원수정 요청 ===")
+            println("User ID: $id")
+            println("Request: $request")
+            println("Bio: '${request.bio}'")
+            println("Survey: '${request.survey}'")
+            println("ProfileImageUrl: '${request.profileImageUrl}'")
+            println("==================")
+            
             val response = userService.updateUser(id, request)
             if (response != null) {
                 ResponseEntity.ok(response)
